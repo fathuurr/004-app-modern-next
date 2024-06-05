@@ -106,6 +106,9 @@ export default {
     faq: {
       py: [8, null, 9, null, null, 10],
     },
+    ourTeam: {
+      py: [8, null, 9, null, null, 10],
+    },
   },
   sectionHeader: {
     width: '100%',

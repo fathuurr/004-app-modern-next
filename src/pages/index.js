@@ -14,13 +14,14 @@ import TestimonialCard from 'sections/testimonial';
 import SecurePayment from 'sections/secure-payment';
 import Package from 'sections/package';
 import Faq from 'sections/faq';
+import OurTeam from 'sections/our-team';
 
 export default function IndexPage() {
   return (
     <ThemeProvider theme={theme}>
       <StickyProvider>
         <Layout>
-          <SEO title="Startup Landing 004" />
+          <SEO title='AppInnovate' />
           <Banner />
           <KeyFeature />
           <CoreFeature />
@@ -31,6 +32,7 @@ export default function IndexPage() {
           <SecurePayment />
           <Package />
           <Faq />
+          <OurTeam />
         </Layout>
       </StickyProvider>
     </ThemeProvider>

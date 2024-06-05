@@ -15,4 +15,8 @@ export default [
     path: 'pricing',
     label: 'Pricing',
   },
+  {
+    path: 'contactus',
+    label: 'Contact Us',
+  },
 ];
