@@ -2,6 +2,8 @@
 import { jsx } from 'theme-ui';
 import { Container, Grid, Box, Heading, Text } from 'theme-ui';
 import SectionHeader from 'components/section-header';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import PatternBG from 'assets/patternBG.png';
 import ArrowOdd from 'assets/arrowOdd.png';
@@ -12,25 +14,25 @@ const data = [
     id: 1,
     title: 'Set disbursement Instructions',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'Enter your preferences for fund disbursement effortlessly, ensuring seamless management of your transactions.',
   },
   {
     id: 2,
     title: 'Assembly retrieves funds from your account',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'Our system securely retrieves the necessary funds from your designated account, guaranteeing a smooth and efficient process.',
   },
   {
     id: 3,
     title: 'Assembly initiates disbursement',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'With precision and reliability, our platform initiates the disbursement process according to your specified instructions, ensuring timely and accurate execution.',
   },
   {
     id: 4,
     title: 'Customer receives funds payment',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'Experience the convenience of receiving your funds directly, completing the transaction cycle with satisfaction and peace of mind.',
   },
 ];
 
@@ -45,20 +47,45 @@ export default function WorkFlow() {
         />
 
         <Grid sx={styles.grid}>
-          {data.map((item) => (
-            <Box sx={styles.card} key={item.id}>
-              <Box sx={styles.iconBox}>{`0${item.id}`}</Box>
-              <Box sx={styles.wrapper}>
-                <Heading sx={styles.wrapper.title}>{item.title}</Heading>
-                <Text sx={styles.wrapper.subTitle}>{item.text}</Text>
-              </Box>
-            </Box>
+          {data.map((item, index) => (
+            <WorkFlowItem key={item.id} item={item} index={index} />
           ))}
         </Grid>
       </Container>
     </section>
   );
 }
+
+const WorkFlowItem = ({ item, index }) => {
+  const { title, text } = item;
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.2,
+  });
+
+  const variants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+      variants={variants}
+      transition={{ duration: 0.5, delay: index * 0.2 }}
+    >
+      <Box sx={styles.card}>
+        <Box sx={styles.iconBox}>{`0${index + 1}`}</Box>
+        <Box sx={styles.wrapper}>
+          <Heading sx={styles.wrapper.title}>{title}</Heading>
+          <Text sx={styles.wrapper.subTitle}>{text}</Text>
+        </Box>
+      </Box>
+    </motion.div>
+  );
+};
 
 const styles = {
   workflow: {

@@ -1,13 +1,15 @@
+/** @jsx jsx */
+import { jsx, Container, Grid, Label, Input, Textarea, Button } from 'theme-ui';
 import SectionHeader from 'components/section-header';
+import OurTeamCard from 'components/our-team-card';
 import Fathur from 'assets/our-team/test2.png';
 import Tabah from 'assets/our-team/tabah.jpeg';
 import Bayu from 'assets/our-team/bayu.jpeg';
 import Denis from 'assets/our-team/denis.jpeg';
 import Ical from 'assets/our-team/ical.jpeg';
 import Tegar from 'assets/our-team/tegar.jpeg';
-
-import { Label, Input, Textarea, Container, Grid, Button } from 'theme-ui';
-import OurTeamCard from 'components/our-team-card';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const data = [
   {
@@ -55,6 +57,17 @@ const data = [
 ];
 
 const OurTeam = () => {
+  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.1 });
+
+  const variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2 },
+    }),
+  };
+
   return (
     <section id='contactus' sx={{ variant: 'section.ourTeam' }}>
       <Container>
@@ -62,16 +75,22 @@ const OurTeam = () => {
           slogan={'Contact Us'}
           title={'Get in Touch with Our Expert Team'}
         />
-
-        <Grid sx={styles.grid}>
-          {data.map((item) => (
-            <OurTeamCard
+        <Grid sx={styles.grid} ref={ref}>
+          {data.map((item, index) => (
+            <motion.div
               key={item.id}
-              src={item.imgSrc}
-              alt={item.title}
-              title={item.title}
-              text={item.text}
-            />
+              custom={index}
+              initial="hidden"
+              animate={inView ? 'visible' : 'hidden'}
+              variants={variants}
+            >
+              <OurTeamCard
+                src={item.imgSrc}
+                alt={item.title}
+                title={item.title}
+                text={item.text}
+              />
+            </motion.div>
           ))}
         </Grid>
 

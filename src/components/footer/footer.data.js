@@ -18,10 +18,6 @@ export default [
         path: '/',
         label: 'Copyright',
       },
-      {
-        path: '/',
-        label: 'Popular Campaign',
-      },
     ],
   },
   {
@@ -38,39 +34,6 @@ export default [
       {
         path: '/',
         label: 'Terms & Conditions',
-      },
-      {
-        path: '/',
-        label: 'Site Map',
-      },
-      {
-        path: '/',
-        label: 'Store Hours',
-      },
-    ],
-  },
-  {
-    header: 'My Account',
-    items: [
-      {
-        path: '/',
-        label: 'Press inquiries',
-      },
-      {
-        path: '/',
-        label: 'Social media ',
-      },
-      {
-        path: '/',
-        label: 'directories',
-      },
-      {
-        path: '/',
-        label: 'Images & B-roll',
-      },
-      {
-        path: '/',
-        label: 'Permissions',
       },
     ],
   },
@@ -92,6 +55,27 @@ export default [
       {
         path: '/',
         label: 'Responsible supply chain',
+      },
+    ],
+  },
+  {
+    header: 'Stay Connected',
+    items: [
+      {
+        path: '/',
+        label: 'Facebook',
+      },
+      {
+        path: '/',
+        label: 'Twitter',
+      },
+      {
+        path: '/',
+        label: 'Instagram',
+      },
+      {
+        path: '/',
+        label: 'LinkedIn',
       },
     ],
   },

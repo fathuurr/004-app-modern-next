@@ -2,6 +2,8 @@
 import { jsx, Container, Box, Grid, Text, Heading } from 'theme-ui';
 import TextFeature from 'components/text-feature';
 import Image from 'components/image';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import CoreFeatureThumb from 'assets/coreFeature.png';
 import Briefcase from 'assets/core-feature/briefcase.svg';
@@ -9,30 +11,47 @@ import Secure from 'assets/core-feature/secure.svg';
 
 const data = {
   subTitle: 'Core features',
-  title: 'Smart Jackpots that you may love this anytime & anywhere',
+  title: 'Custom Mobile App Development',
   features: [
     {
       id: 1,
       imgSrc: Briefcase,
       altText: 'Smart Features',
-      title: 'Smart Features',
+      title: 'Continuous Support & Maintenance',
       text:
-        'Get your blood tests delivered at let home collect sample from the victory of the managements. your blood tests.',
+        'Ongoing assistance to keep your app running smoothly.',
     },
     {
       id: 2,
       imgSrc: Secure,
       altText: 'Secure Contents',
-      title: 'Secure Contents',
+      title: 'User-Centric Design',
       text:
-        'Get your blood tests delivered at let home collect sample from the victory of the managements. your blood tests.',
+        ' Intuitive and engaging interfaces that prioritize user experience.',
     },
   ],
 };
 
 export default function CoreFeature() {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.3,
+  });
+
+  const variants = {
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 100 },
+  };
+  
+
   return (
-    <section sx={styles.coreFeature}>
+    <motion.section
+      ref={ref}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+      variants={variants}
+      sx={styles.coreFeature}
+    >
       <Container sx={styles.containerBox}>
         <Box sx={styles.thumbnail}>
           <Image src={CoreFeatureThumb} alt="Thumbnail" />
@@ -44,19 +63,23 @@ export default function CoreFeature() {
 
           <Grid gap="15px 0" columns={1} sx={styles.grid}>
             {data.features.map((item) => (
-              <Box sx={styles.card} key={item.id}>
+              <motion.div
+                key={item.id}
+                variants={variants}
+                sx={styles.card}
+              >
                 <Image src={item.imgSrc} alt={item.altText} sx={styles.img} />
 
                 <Box sx={styles.wrapper}>
                   <Heading sx={styles.wrapper.title}>{item.title}</Heading>
                   <Text sx={styles.wrapper.subTitle}>{item.text}</Text>
                 </Box>
-              </Box>
+              </motion.div>
             ))}
           </Grid>
         </Box>
       </Container>
-    </section>
+    </motion.section>
   );
 }
 

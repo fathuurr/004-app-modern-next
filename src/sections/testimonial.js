@@ -1,54 +1,52 @@
 /** @jsx jsx */
-import { jsx, Container, Heading, Text, Box, Image } from 'theme-ui';
-import SectionHeader from 'components/section-header';
-import Rating from 'components/rating';
-import ButtonGroup from 'components/button-group';
-import Carousel from 'react-multi-carousel';
+import { jsx, Container, Heading, Text, Box, Image } from "theme-ui";
+import SectionHeader from "components/section-header";
+import Rating from "components/rating";
+import ButtonGroup from "components/button-group";
+import Carousel from "react-multi-carousel";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
-import Avatar1 from 'assets/testimonial/avatar1.png';
-import Avatar2 from 'assets/testimonial/avatar2.png';
-import Avatar3 from 'assets/testimonial/avatar3.png';
-import Avatar4 from 'assets/testimonial/avatar4.png';
+import Avatar1 from "assets/testimonial/avatar1.png";
+import Avatar2 from "assets/testimonial/avatar2.png";
+import Avatar3 from "assets/testimonial/avatar3.png";
+import Avatar4 from "assets/testimonial/avatar4.png";
 
 const data = [
   {
     id: 1,
-    title: 'Modern look & trending design',
-    description:
-      'Get working experience to work with this amazing team & in future want to work together for bright future projects and also make deposit to freelancer.',
+    title: "Modern look & trending design",
+    description: `Tremendous experience collaborating with AppVenture for our mobile app development needs. Their team's expertise and dedication resulted in an outstanding application that perfectly aligns with our vision. Highly recommend their services to anyone seeking top-notch mobile solutions!`,
     avatar: Avatar1,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
+    name: "Selena Gomez",
+    designation: "@sel.gom",
     review: 4,
   },
   {
     id: 2,
-    title: 'Design Quality & performance',
-    description:
-      'Get working experience to work with this amazing team & in future want to work together for bright future projects and also make deposit to freelancer.',
+    title: "Design Quality & performance",
+    description: `Working with AppVenture for our mobile app project was an absolute pleasure. Their professionalism, creativity, and attention to detail exceeded our expectations. The end product not only met but exceeded our goals. Highly satisfied and looking forward to future collaborations!`,
     avatar: Avatar2,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
+    name: "James Arthur",
+    designation: "@james.art",
     review: 5,
   },
   {
     id: 3,
-    title: 'Layout and organized layers',
-    description:
-      'Get working experience to work with this amazing team & in future want to work together for bright future projects and also make deposit to freelancer.',
+    title: "Layout and organized layers",
+    description: `Choosing AppVenture for our mobile app development was the best decision we made. From the initial concept to the final product, their team demonstrated exceptional skills and commitment. The app they delivered is not only user-friendly but also aesthetically pleasing.`,
     avatar: Avatar3,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
+    name: "Deni Caknan",
+    designation: "@deni.caknan",
     review: 5,
   },
   {
     id: 4,
-    title: 'Modern look & trending design',
-    description:
-      'Get working experience to work with this amazing team & in future want to work together for bright future projects and also make deposit to freelancer.',
+    title: "Modern look & trending design",
+    description: `Impressed by the seamless experience of working with AppVenture on our mobile app. Their proactive communication, innovative ideas, and technical proficiency ensured a smooth development process. Delighted with the final result and excited to launch our app`,
     avatar: Avatar4,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
+    name: "Mukesh Ambani",
+    designation: "@mukesh.ambani",
     review: 4,
   },
 ];
@@ -78,7 +76,7 @@ const responsive = {
 
 export default function TestimonialCard() {
   return (
-    <section id="testimonial" sx={{ variant: 'section.testimonial' }}>
+    <section id="testimonial" sx={{ variant: "section.testimonial" }}>
       <Container>
         <SectionHeader slogan="Testimonial" title="Meet Client Satisfaction" />
       </Container>
@@ -106,24 +104,7 @@ export default function TestimonialCard() {
           slidesToSlide={1}
         >
           {data.map((item) => (
-            <Box sx={styles.reviewCard} key={`testimonial--key${item.id}`}>
-              <Rating rating={item.review} />
-              <Heading as="h3" sx={styles.title}>
-                {item.title}
-              </Heading>
-              <Text sx={styles.description}>{item.description}</Text>
-              <div className="card-footer">
-                <div className="image">
-                  <Image src={item.avatar} alt="Client Image" />
-                </div>
-                <div className="reviewer-info">
-                  <Heading as="h4" sx={styles.heading}>
-                    {item.name}
-                  </Heading>
-                  <Text sx={styles.designation}>{item.designation}</Text>
-                </div>
-              </div>
-            </Box>
+            <TestimonialItem key={`testimonial--key${item.id}`} item={item} />
           ))}
         </Carousel>
       </Box>
@@ -131,99 +112,140 @@ export default function TestimonialCard() {
   );
 }
 
+const TestimonialItem = ({ item }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.1,
+  });
+
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      variants={variants}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <Box sx={styles.reviewCard}>
+        <Rating rating={item.review} />
+        <Heading as="h3" sx={styles.title}>
+          {item.title}
+        </Heading>
+        <Text sx={styles.description}>{item.description}</Text>
+        <div className="card-footer">
+          <div className="image">
+            <Image src={item.avatar} alt="Client Image" />
+          </div>
+          <div className="reviewer-info">
+            <Heading as="h4" sx={styles.heading}>
+              {item.name}
+            </Heading>
+            <Text sx={styles.designation}>{item.designation}</Text>
+          </div>
+        </div>
+      </Box>
+    </motion.div>
+  );
+};
+
 const styles = {
   carouselWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    mt: '-35px',
-    px: '15px',
-    '.carousel-container': {
-      width: '100%',
+    display: "flex",
+    justifyContent: "flex-end",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    mt: "-35px",
+    px: "15px",
+    ".carousel-container": {
+      width: "100%",
       maxWidth: [
-        '100%',
+        "100%",
         null,
         null,
-        '750px',
-        '1000px',
-        '1180px',
+        "750px",
+        "1000px",
+        "1180px",
         null,
-        'calc(50% + 865px)',
+        "calc(50% + 865px)",
       ],
-      mr: ['auto', null, null, null, null, null, null, '-220px'],
-      ml: 'auto',
-      '.react-multi-carousel-item': {
-        transition: 'all 0.25s',
+      mr: ["auto", null, null, null, null, null, null, "-220px"],
+      ml: "auto",
+      ".react-multi-carousel-item": {
+        transition: "all 0.25s",
       },
-      '.react-multi-carousel-item--active:nth-of-type(4n)': {
-        opacity: '0.5',
-        '@media screen and (max-width: 1620px)': {
+      ".react-multi-carousel-item--active:nth-of-type(4n)": {
+        opacity: "0.5",
+        "@media screen and (max-width: 1620px)": {
           opacity: 1,
         },
       },
     },
   },
   reviewCard: {
-    boxShadow: '0px 0px 1px rgba(38, 78, 118, 0.35)',
-    transition: 'all 0.3s',
-    borderRadius: '6px',
+    boxShadow: "0px 0px 1px rgba(38, 78, 118, 0.35)",
+    transition: "all 0.3s",
+    borderRadius: "6px",
     p: [
-      '30px 20px 35px',
-      '30px 25px 35px',
-      '30px 20px 35px',
-      '35px 30px 40px 40px',
-      '30px 30px 35px',
-      '35px 30px 40px 40px',
+      "30px 20px 35px",
+      "30px 25px 35px",
+      "30px 20px 35px",
+      "35px 30px 40px 40px",
+      "30px 30px 35px",
+      "35px 30px 40px 40px",
     ],
-    bg: 'white',
-    textAlign: 'left',
+    bg: "white",
+    textAlign: "left",
     m: [
-      '28px 5px 30px 5px',
-      '28px 20px 30px 20px',
-      '28px 15px 30px 15px',
-      '28px 15px 30px 15px',
-      '30px 20px 40px',
+      "28px 5px 30px 5px",
+      "28px 20px 30px 20px",
+      "28px 15px 30px 15px",
+      "28px 15px 30px 15px",
+      "30px 20px 40px",
     ],
-    '&:hover': {
-      boxShadow: '0px 6px 47px rgba(38, 78, 118, 0.1)',
+    "&:hover": {
+      boxShadow: "0px 6px 47px rgba(38, 78, 118, 0.1)",
     },
-    '.rating': {
+    ".rating": {
       mb: [1, null, null, 2],
       ul: {
         pl: 0,
-        listStyle: 'none',
+        listStyle: "none",
         mb: 0,
-        display: 'flex',
+        display: "flex",
       },
       svg: {
-        marginRight: '2px',
-        '&:last-of-type': {
+        marginRight: "2px",
+        "&:last-of-type": {
           marginRight: 0,
         },
       },
-      '.star': {
-        color: 'yellow',
-        mr: '1px',
+      ".star": {
+        color: "yellow",
+        mr: "1px",
       },
-      '.star-o': {
-        color: '#ddd',
-        mr: '1px',
+      ".star-o": {
+        color: "#ddd",
+        mr: "1px",
       },
     },
-    '.card-footer': {
-      display: 'flex',
-      alignItems: 'center',
-      marginTop: [5, null, null, '33px'],
-      '.image': {
+    ".card-footer": {
+      display: "flex",
+      alignItems: "center",
+      marginTop: [5, null, null, "33px"],
+      ".image": {
         flexShrink: 0,
         mr: [3, null, null, 4],
-        display: 'flex',
+        display: "flex",
         img: {
-          width: '55px',
-          height: '55px',
-          borderRadius: '50%',
-          objectFit: 'cover',
+          width: "55px",
+          height: "55px",
+          borderRadius: "50%",
+          objectFit: "cover",
         },
       },
     },
@@ -231,27 +253,28 @@ const styles = {
   title: {
     fontSize: [1, 2],
     fontWeight: 700,
-    mb: [3, null, null, '22px'],
-    color: 'text',
+    mb: [3, null, null, "22px"],
+    color: "text",
     lineHeight: 1.6,
   },
   description: {
     fontSize: [1, null, null, 2],
-    fontWeight: 'normal',
-    color: 'text',
+    fontWeight: "normal",
+    color: "text",
     lineHeight: [1.85, null, 2],
   },
   heading: {
     fontSize: [1, null, null, 2],
     fontWeight: 700,
-    mb: '3px',
-    color: 'text',
+    mb: "3px",
+    color: "text",
     lineHeight: 1.3,
   },
   designation: {
-    color: '#25A0FF',
-    fontWeight: '500',
+    color: "#25A0FF",
+    fontWeight: "500",
     fontSize: 1,
     lineHeight: 1.4,
   },
 };
+

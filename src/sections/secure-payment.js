@@ -3,6 +3,8 @@ import { jsx } from 'theme-ui';
 import { Container, Box } from 'theme-ui';
 import TextFeature from 'components/text-feature';
 import Image from 'components/image';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import PaymentThumb from 'assets/paymentThumb.png';
 import PaymentPattern from 'assets/payment-pattern.png';
@@ -11,20 +13,42 @@ const data = {
   subTitle: 'PAYMENT SECURITY',
   title: 'Secure Payment Transaction System with #1 Ranking',
   description:
-    'Get your tests delivered at let home collect sample from the victory of the managements that supplies best design system guidelines ever. Get your tests delivered at let home collect sample.',
+    '"Experience peace of mind with our top-ranked Secure Payment Transaction System, ensuring the highest level of payment security available. Benefit from the expertise of our management team, renowned for delivering unparalleled design system guidelines.',
   btnName: 'Learn More',
   btnURL: '#',
 };
 
 export default function SecurePayment() {
+  const [refThumbnail, inViewThumbnail] = useInView({ triggerOnce: false, threshold: 0.1 });
+  const [refContent, inViewContent] = useInView({ triggerOnce: false, threshold: 0.1 });
+
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <section sx={{ variant: 'section.securePayment' }}>
       <Box sx={styles.bgOverlay} />
       <Container sx={styles.containerBox}>
-        <Box sx={styles.thumbnail}>
+        <motion.div
+          ref={refThumbnail}
+          initial="hidden"
+          animate={inViewThumbnail ? "visible" : "hidden"}
+          variants={variants}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          sx={styles.thumbnail}
+        >
           <Image src={PaymentThumb} alt={data.title} />
-        </Box>
-        <Box sx={styles.contentBox}>
+        </motion.div>
+        <motion.div
+          ref={refContent}
+          initial="hidden"
+          animate={inViewContent ? "visible" : "hidden"}
+          variants={variants}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          sx={styles.contentBox}
+        >
           <TextFeature
             subTitle={data.subTitle}
             title={data.title}
@@ -32,7 +56,7 @@ export default function SecurePayment() {
             btnName={data.btnName}
             btnURL={data.btnURL}
           />
-        </Box>
+        </motion.div>
       </Container>
     </section>
   );

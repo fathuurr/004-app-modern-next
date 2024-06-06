@@ -140,7 +140,7 @@ const styles = {
   },
   price: {
     fontWeight: 'bold',
-    fontSize: [4, null, 5, null, '26px'],
+    fontSize: [4, null, 5, null, '19px'],
     lineHeight: 1,
     display: 'flex',
     letterSpacing: '-0.5px',

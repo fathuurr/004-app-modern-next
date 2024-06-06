@@ -4,6 +4,8 @@ import PriceCard from 'components/price-card';
 import SectionHeader from 'components/section-header';
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from 'react-icons/io';
 import PatternBG from 'assets/patternBG.png';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const packages = [
   {
@@ -75,7 +77,21 @@ const packages = [
     ],
   },
 ];
+
 export default function Package() {
+  const [refLeft, inViewLeft] = useInView({ triggerOnce: false, threshold: 0.1 });
+  const [refRight, inViewRight] = useInView({ triggerOnce: false, threshold: 0.1 });
+
+  const leftVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  const rightVariants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0 },
+  };
+
   return (
     <section id="pricing" sx={styles.pricing}>
       <Container>
@@ -90,9 +106,26 @@ export default function Package() {
             flexWrap: ['wrap', null, null, 'nowrap'],
           }}
         >
-          {packages.map((packageData) => (
-            <PriceCard data={packageData} key={packageData.name} />
-          ))}
+          <motion.div
+            ref={refLeft}
+            initial="hidden"
+            animate={inViewLeft ? 'visible' : 'hidden'}
+            variants={leftVariants}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            sx={{ marginRight: [0, null, null, 3], marginBottom: [4, null, null, 0] }}
+          >
+            <PriceCard data={packages[0]} key={packages[0].name} />
+          </motion.div>
+          <motion.div
+            ref={refRight}
+            initial="hidden"
+            animate={inViewRight ? 'visible' : 'hidden'}
+            variants={rightVariants}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            sx={{ marginLeft: [0, null, null, 3], marginBottom: [4, null, null, 0] }}
+          >
+            <PriceCard data={packages[1]} key={packages[1].name} />
+          </motion.div>
         </Flex>
       </Container>
     </section>

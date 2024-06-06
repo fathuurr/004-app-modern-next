@@ -21,7 +21,7 @@ export default function IndexPage() {
     <ThemeProvider theme={theme}>
       <StickyProvider>
         <Layout>
-          <SEO title='AppInnovate' />
+          <SEO title='AppVenture' />
           <Banner />
           <KeyFeature />
           <CoreFeature />

@@ -15,7 +15,7 @@ export default function Header({ className }) {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MdDeveloperMode size={50} />
             <span style={{ fontSize: '20px', marginLeft: '5px' }}>
-              AppInnovate
+              AppVenture
             </span>
           </div>
 

@@ -3,6 +3,8 @@ import { jsx } from 'theme-ui';
 import { Container, Grid } from 'theme-ui';
 import SectionHeader from 'components/section-header';
 import FeatureCard from 'components/feature-card.js';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import Smart from 'assets/feature/smart.svg';
 import Winner from 'assets/feature/winner.svg';
 import Cloud from 'assets/feature/cloud.svg';
@@ -17,7 +19,7 @@ const data = [
     altText: 'Smart',
     title: 'Smart Features',
     text:
-      'Get your blood tests delivered at let home collect sample from the victory of the managements.',
+      'Experience cutting-edge technology that brings your app to life with intelligent functionalities tailored to your needs.',
   },
   {
     id: 2,
@@ -25,7 +27,7 @@ const data = [
     altText: 'Performance',
     title: 'Fast Performance',
     text:
-      'Get your blood tests delivered at let home collect sample from the victory of the managements.',
+      'Enjoy lightning-fast performance that ensures your app runs smoothly and efficiently, providing an exceptional user experience.',
   },
   {
     id: 3,
@@ -33,7 +35,7 @@ const data = [
     altText: 'Content',
     title: 'Unlimited Content',
     text:
-      'Get your blood tests delivered at let home collect sample from the victory of the managements.',
+      'Access a world of endless possibilities with limitless content integration, keeping your users engaged and informed.',
   },
   {
     id: 4,
@@ -41,7 +43,7 @@ const data = [
     altText: 'Customization',
     title: 'Unlimited Customization',
     text:
-      'Get your blood tests delivered at let home collect sample from the victory of the managements.',
+      'Transform your app to perfectly match your vision with our extensive customization options, allowing for a truly unique experience.',
   },
   {
     id: 5,
@@ -49,7 +51,7 @@ const data = [
     altText: 'Productivity',
     title: 'Boost Productivity',
     text:
-      'Get your blood tests delivered at let home collect sample from the victory of the managements.',
+      `Enhance your workflow and increase efficiency with tools and features designed to maximize productivity and streamline operations.`,
   },
   {
     id: 6,
@@ -57,7 +59,7 @@ const data = [
     altText: 'Support',
     title: 'Customer Support',
     text:
-      'Get your blood tests delivered at let home collect sample from the victory of the managements.',
+      `Benefit from our dedicated customer support team, ready to assist you at every step to ensure your app's success and satisfaction.`,
   },
 ];
 
@@ -66,25 +68,43 @@ export default function Feature() {
     <section sx={{ variant: 'section.feature' }}>
       <Container>
         <SectionHeader
-          slogan="Quality features"
-          title="Meet exciting feature of app"
+          slogan="Leading edge features"
+          title="Unlock a world of possibilities with the feature"
         />
 
         <Grid sx={styles.grid}>
-          {data.map((item) => (
-            <FeatureCard
-              key={item.id}
-              src={item.imgSrc}
-              alt={item.title}
-              title={item.title}
-              text={item.text}
-            />
+          {data.map((item, index) => (
+            <FeatureItem key={item.id} {...item} index={index} />
           ))}
         </Grid>
       </Container>
     </section>
   );
 }
+
+const FeatureItem = ({ imgSrc, altText, title, text, index }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.2, 
+  });
+
+  const variants = {
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 50 },
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+      variants={variants}
+      transition={{ duration: 0.5, delay: index * 0.2 }} // Adjust timing as needed
+    >
+      <FeatureCard src={imgSrc} alt={altText} title={title} text={text} />
+    </motion.div>
+  );
+};
 
 const styles = {
   grid: {

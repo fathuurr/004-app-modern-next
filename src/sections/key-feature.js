@@ -1,6 +1,8 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
 import { Container, Grid } from 'theme-ui';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer'; // Tambahkan ini
 import SectionHeader from '../components/section-header';
 import FeatureCardColumn from 'components/feature-card-column.js';
 import Vector from 'assets/key-feature/vector.svg';
@@ -12,17 +14,17 @@ const data = [
     id: 1,
     imgSrc: Vector,
     altText: 'Vector',
-    title: 'Vector Editing',
+    title: 'Seamless Integration',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'Experience a world where your app effortlessly connects with various platforms and services.',
   },
   {
     id: 2,
     imgSrc: Editing,
     altText: 'Monitoring',
-    title: 'Customize & Monitoring',
+    title: 'Personalized User Experience',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'Dive into a tailored journey with our personalized user experience feature.',
   },
   {
     id: 3,
@@ -30,13 +32,23 @@ const data = [
     altText: 'Quality',
     title: 'Quality & Short-period',
     text:
-      'Get your blood tests delivered at home collect a sample from the your blood tests.',
+      'Experience top-tier mobile apps developed in record time with our "Quality & Short-period" feature.',
   },
 ];
 
 export default function KeyFeature() {
+  const controls = useAnimation();
+  const [ref, inView] = useInView(); // Gunakan useInView untuk mendeteksi saat masuk ke viewport
+
+  // Animasi saat elemen masuk ke dalam viewport
+  if (inView) {
+    controls.start('visible');
+  } else {
+    controls.start('hidden');
+  }
+
   return (
-    <section sx={{ variant: 'section.keyFeature' }} id="feature">
+    <section ref={ref} sx={{ variant: 'section.keyFeature' }} id="feature">
       <Container>
         <SectionHeader
           slogan="Quality features"
@@ -45,13 +57,23 @@ export default function KeyFeature() {
 
         <Grid sx={styles.grid}>
           {data.map((item) => (
-            <FeatureCardColumn
+            <motion.div
               key={item.id}
-              src={item.imgSrc}
-              alt={item.title}
-              title={item.title}
-              text={item.text}
-            />
+              variants={{
+                visible: { opacity: 1, y: 0 },
+                hidden: { opacity: 0, y: 20 },
+              }}
+              initial="hidden"
+              animate={controls}
+              transition={{ duration: 1 }}
+            >
+              <FeatureCardColumn
+                src={item.imgSrc}
+                alt={item.title}
+                title={item.title}
+                text={item.text}
+              />
+            </motion.div>
           ))}
         </Grid>
       </Container>
